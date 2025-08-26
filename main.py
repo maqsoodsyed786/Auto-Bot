@@ -2,7 +2,7 @@ import os, requests, time, hashlib, hmac, json
 
 API_KEY = "OgYia0BEgBrhkuboyEo6aW2TjxAmdY"   # store in env in production
 API_SECRET = "hVg8Yy2RCKkCaA1d7UstrJ8QCnMxKl3Q0OOkHup1breugVV1pRelebuHVlI9"
-BASE_URL = "https://testnet-api.delta.exchange"  # Sandbox endpoint
+BASE_URL = "https://cdn-ind.testnet.deltaex.org"  # Sandbox endpoint
 
 def sign_request(path, method="GET", body=""):
     timestamp = str(int(time.time()))
