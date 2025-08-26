@@ -1,7 +1,7 @@
 import os, requests, time, hashlib, hmac, json
 
-API_KEY = os.getenv("DELTA_API_KEY")  # stored safely in secrets
-API_SECRET = os.getenv("DELTA_API_SECRET")
+API_KEY = "OgYia0BEgBrhkuboyEo6aW2TjxAmdY"  # stored safely in secrets
+API_SECRET = "hVg8Yy2RCKkCaA1d7UstrJ8QCnMxKl3Q0OOkHup1breugVV1pRelebuHVlI9"
 BASE_URL = "https://testnet-api.delta.exchange"  # Sandbox endpoint
 
 def sign_request(path, method="GET", body=""):
