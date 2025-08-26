@@ -10,31 +10,27 @@ def get_public_ip():
 
 print("Your current public IP is:", get_public_ip())
 
-def sign_request(path, method="GET", body=""):
+def sign_request(path, method="GET", query="", body=""):
     timestamp = str(int(time.time()))
-    message = timestamp + method + path + body
+    message = method + timestamp + path + query + body   # correct order
     signature = hmac.new(
         API_SECRET.encode(),
         message.encode(),
         hashlib.sha256
     ).hexdigest()
-
-    headers = {
+    return {
         "api-key": API_KEY,
         "timestamp": timestamp,
         "signature": signature,
+        "User-Agent": "my-api-client",
+        "Content-Type": "application/json"
     }
-    # Content-Type only if it's a POST/PUT with body
-    if method != "GET":
-        headers["Content-Type"] = "application/json"
-    return headers
 
 def get_balance():
     path = "/v2/wallet/balances"
     url = BASE_URL + path
-    r = requests.get(url, headers=sign_request(path, "GET"))
+    headers = sign_request(path, "GET")
+    r = requests.get(url, headers=headers)
     return r.json()
 
-while True:
-    print("Balances:", get_balance())
-    time.sleep(60)  # runs every 1 minute
+print("Balances:", get_balance())
