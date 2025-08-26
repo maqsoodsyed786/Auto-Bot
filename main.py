@@ -1,6 +1,6 @@
 import os, requests, time, hashlib, hmac, json
 
-API_KEY = "OgYia0BEgBrhkuboyEo6aW2TjxAmdY"  # stored safely in secrets
+API_KEY = "OgYia0BEgBrhkuboyEo6aW2TjxAmdY"   # store in env in production
 API_SECRET = "hVg8Yy2RCKkCaA1d7UstrJ8QCnMxKl3Q0OOkHup1breugVV1pRelebuHVlI9"
 BASE_URL = "https://testnet-api.delta.exchange"  # Sandbox endpoint
 
@@ -12,17 +12,21 @@ def sign_request(path, method="GET", body=""):
         message.encode(),
         hashlib.sha256
     ).hexdigest()
-    return {
+
+    headers = {
         "api-key": API_KEY,
         "timestamp": timestamp,
         "signature": signature,
-        "Content-Type": "application/json"
     }
+    # Content-Type only if it's a POST/PUT with body
+    if method != "GET":
+        headers["Content-Type"] = "application/json"
+    return headers
 
 def get_balance():
     path = "/v2/wallet/balances"
     url = BASE_URL + path
-    r = requests.get(url, headers=sign_request(path))
+    r = requests.get(url, headers=sign_request(path, "GET"))
     return r.json()
 
 while True:
